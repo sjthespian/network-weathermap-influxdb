@@ -19,6 +19,13 @@ This code makes several assumptions for simplicity, these may not be valid in yo
 ```TARGET influxdb:localhost:telegraf:::ifOperStatus:ifOperStatus:ifTable:"hostname"='mynetworkdevice'%20AND%20"ifIndex"='{node:this:ifIndex}'```
 
 ```TARGET 8*influxdb:localhost:telegraf:::ifHCInOctets:ifHCOutOctets:ifXTable:"hostname"='mynetworkdevice'%20AND%20"ifAlias"='{link:this:ifAlias}'```
+
+![Sample Bristle Switch](/examples/cameras-bristle.png)
+
+
+
+## TODO
+* I still need to figure out a good way to handle OVERLIBGRAPH, probably via. grafana IDs (which is ugly and incredibly manual)
         
 
 [Network Weathermap]: https://www.network-weathermap.com

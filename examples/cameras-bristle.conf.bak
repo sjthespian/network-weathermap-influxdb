@@ -1,0 +1,305 @@
+FONTDEFINE 20 ./LucidaSansRegular.ttf 6
+FONTDEFINE 21 ./LucidaSansRegular.ttf 8
+FONTDEFINE 22 ./VeraBd.ttf 10
+FONTDEFINE 23 ./Vera.ttf 8
+FONTDEFINE 24 ./VeraMono.ttf 7
+FONTDEFINE 30 ./VeraBd.ttf 13
+
+BACKGROUND images/background.png
+HTMLSTYLE overlib
+KILO 1024
+KEYFONT 20
+TITLE CAT3750 Map
+HTMLOUTPUTFILE output/cameras-bristle.html
+IMAGEOUTPUTFILE output/cameras-bristle.png
+IMAGEURI cameras-bristle.png
+
+TIMEPOS 620 10 Created: %b %d %Y %H:%M:%S
+
+KEYPOS DEFAULT 730 30 Traffic Load
+KEYSTYLE  DEFAULT vertical 350
+KEYTEXTCOLOR 0 0 0
+KEYOUTLINECOLOR 0 0 0
+KEYBGCOLOR 255 255 255
+BGCOLOR 255 255 255
+TITLECOLOR 0 0 255
+TIMECOLOR 0 0 255
+SCALE DEFAULT 0    1      0 255   0   255 255   0    
+SCALE DEFAULT 1    20   255 255   0   255 165   0    
+SCALE DEFAULT 20   100  255 165   0   255   0   0    
+
+KEYPOS updown 705 450 Port State
+KEYSTYLE updown tags 100
+SCALE updown   0 0.9 255 255   0        N/A
+SCALE updown 0.9 1.9  96 255  96        Up 
+SCALE updown 1.9 2.9 255  96  96        Down
+SCALE updown 2.9 3.9 255 192   0        Testing
+SCALE updown 3.9 4.9 127 127 127        Unknown
+SCALE updown 4.9 5.9   0   0   0        Dormant
+SCALE updown 5.9 6.9 192 192 192        Not Present
+SCALE updown 6.9 7.9 255   0   0        Layer Down
+SCALE updown 7.9 100   0   0 255        Undefined
+
+# End of global section
+
+
+# TEMPLATE-only NODEs:
+NODE port
+        USESCALE updown absolute
+	USEICONSCALE updown in absolute
+	ICON images/port-down.png
+        ZORDER 300
+        LABELFONT 24
+        LABELFONTCOLOR contrast
+        OVERLIBWIDTH 403
+        OVERLIBHEIGHT 165
+        SET collectd_cgi http://www.example.com/collectd-web/cgi-bin/collection.modified.cgi
+        SET collectd_node myswitch
+
+        TARGET influxdb:localhost:telegraf:::ifOperStatus:ifOperStatus:ifTable:"hostname"='myswitch'%20AND%20"ifIndex"='{node:this:ifIndex}'
+
+# TEMPLATE-only LINKs:
+LINK DEFAULT
+	WIDTH 6
+	OVERLIBWIDTH 550
+	OVERLIBHEIGHT 200
+	ARROWSTYLE compact
+	COMMENTSTYLE center
+	COMMENTFONT 21
+	INCOMMENT {link:this:ifAlias}
+	OUTLINECOLOR none
+	COMMENTFONTCOLOR 51 51 127
+	SET collectd_cgi http://www.example.com/collectd-web/cgi-bin/collection.modified.cgi
+        SET collectd_node myswitch
+
+        TARGET 8*influxdb:localhost:telegraf:::ifHCInOctets:ifHCOutOctets:ifXTable:"hostname"='myswitch'%20AND%20"ifAlias"='{link:this:ifAlias}'
+	BWLABEL none
+	OUTCOMMENT {link:this:out_interface}
+	BANDWIDTH 1G
+
+
+# regular NODEs:
+NODE myswitch
+	ICON images/ubnt-etherswitch-16150w-front-bristle.png
+	ZORDER 200
+	POSITION 400 300
+
+NODE myswitch_p1
+	TEMPLATE port
+	SET ifIndex 1
+	ICON images/cisco-cat3750-port-up.png
+	POSITION myswitch 56 -8
+	SET collectd_int 0_1
+	#LABEL 01
+
+NODE myswitch_p3
+	TEMPLATE port
+	SET ifIndex 3
+	ICON images/cisco-cat3750-port-up.png
+	POSITION myswitch_p1 18 0
+	SET collectd_int 0_3
+	#LABEL 03
+
+NODE myswitch_p5
+	TEMPLATE port
+	SET ifIndex 5
+	ICON images/cisco-cat3750-port-up.png
+	POSITION myswitch_p3 18 0
+	SET collectd_int 0_5
+	#LABEL 05
+
+NODE myswitch_p7
+	TEMPLATE port
+	SET ifIndex 7
+	ICON images/cisco-cat3750-port-up.png
+	POSITION myswitch_p5 18 0
+	SET collectd_int 0_7
+	#LABEL 07
+
+NODE myswitch_p9
+	TEMPLATE port
+	SET ifIndex 9
+	ICON images/cisco-cat3750-port-up.png
+	POSITION myswitch_p7 18 0
+	SET collectd_int 0_9
+	#LABEL 09
+
+NODE myswitch_p11
+	TEMPLATE port
+	SET ifIndex 11
+	ICON images/cisco-cat3750-port-up.png
+	POSITION myswitch_p9 18 0
+	SET collectd_int 0_11
+	#LABEL 11
+
+NODE myswitch_p13
+	TEMPLATE port
+	SET ifIndex 13
+	ICON images/cisco-cat3750-port-up.png
+	POSITION myswitch_p11 18 0
+	SET collectd_int 0_13
+	#LABEL 13
+
+NODE myswitch_p15
+	TEMPLATE port
+	SET ifIndex 15
+	ICON images/cisco-cat3750-port-up.png
+	POSITION myswitch_p13 18 0
+	SET collectd_int 0_15
+	#LABEL 15
+
+NODE myswitch_p2
+	TEMPLATE port
+	SET ifIndex 2
+	POSITION myswitch_p1 0 17
+	SET collectd_int 0_2
+	##LABEL 02
+
+NODE myswitch_p4
+	TEMPLATE port
+	SET ifIndex 4
+	POSITION myswitch_p2 18 0
+	SET collectd_int 0_4
+	#LABEL 04
+
+NODE myswitch_p6
+	TEMPLATE port
+	SET ifIndex 6
+	POSITION myswitch_p4 18 0
+	SET collectd_int 0_6
+	#LABEL 06
+
+NODE myswitch_p8
+	TEMPLATE port
+	SET ifIndex 8
+	POSITION myswitch_p6 18 0
+	SET collectd_int 0_8
+	#LABEL 08
+
+NODE myswitch_p10
+	TEMPLATE port
+	SET ifIndex 10
+	POSITION myswitch_p8 18 0
+	SET collectd_int 0_10
+	#LABEL 10
+
+NODE myswitch_p12
+	TEMPLATE port
+	SET ifIndex 12
+	POSITION myswitch_p10 18 0
+	SET collectd_int 0_12
+	#LABEL 12
+
+NODE myswitch_p14
+	TEMPLATE port
+	SET ifIndex 14
+	POSITION myswitch_p12 18 0
+	SET collectd_int 0_14
+	#LABEL 14
+
+NODE myswitch_p16
+	TEMPLATE port
+	SET ifIndex 16
+	POSITION myswitch_p14 18 0
+	SET collectd_int 0_16
+	#LABEL 16
+
+
+# regular LINKs:
+LINK myswitch_myswitch_p1
+	SET collectd_int 0_1
+	SET ifAlias
+	NODES myswitch_p1:-1:-15 myswitch_p1:-1:-250
+	SET out_interface 0/1
+
+LINK myswitch_myswitch_p3
+	SET collectd_int 0_3
+	SET ifAlias
+	NODES myswitch_p3:-1:-15 myswitch_p3:-1:-250
+	SET out_interface 0/3
+
+LINK myswitch_myswitch_p5
+	SET collectd_int 0_5
+        SET ifAlias Cam: Front Yard
+	NODES myswitch_p5:-1:-15 myswitch_p5:-1:-250
+	SET out_interface 0/5
+
+LINK myswitch_myswitch_p7
+	SET collectd_int 0_7
+	SET ifAlias Cam: Driveway
+	NODES myswitch_p7:-1:-15 myswitch_p7:-1:-250
+	SET out_interface 0/7
+
+LINK myswitch_myswitch_p9
+	SET collectd_int 0_9
+	SET ifAlias Cam: Back Yard 02
+	NODES myswitch_p9:-1:-15 myswitch_p9:-1:-250
+	SET out_interface 0/9
+
+LINK myswitch_myswitch_p11
+	SET collectd_int 0_11
+	SET ifAlias Cam: West Side
+	NODES myswitch_p11:-1:-15 myswitch_p11:-1:-250
+	SET out_interface 0/11
+
+LINK myswitch_myswitch_p13
+	SET collectd_int 0_13
+	SET ifAlias Cam: Great Room
+	NODES myswitch_p13:-1:-15 myswitch_p13:-1:-250
+	SET out_interface 0/13
+
+LINK myswitch_myswitch_p15
+	SET collectd_int 0_15
+	SET ifAlias Blue Iris
+	NODES myswitch_p15:-1:-15 myswitch_p15:-1:-250
+	SET out_interface 0/15
+
+LINK myswitch_myswitch_p2
+	SET collectd_int 0_2
+	SET ifAlias
+	NODES myswitch_p2:-1:12 myswitch_p2:-1:250
+	SET out_interface 0/2
+
+LINK myswitch_myswitch_p4
+	SET collectd_int 0_4
+	SET ifAlias
+	NODES myswitch_p4:-1:12 myswitch_p4:-1:250
+	SET out_interface 0/4
+
+LINK myswitch_myswitch_p6
+	SET collectd_int 0_6
+	SET ifAlias Cam: Front Door
+	NODES myswitch_p6:-1:12 myswitch_p6:-1:250
+	SET out_interface 0/6
+
+LINK myswitch_myswitch_p8
+	SET collectd_int 0_8
+	SET ifAlias Cam: East Side
+	NODES myswitch_p8:-1:12 myswitch_p8:-1:250
+	SET out_interface 0/8
+
+LINK myswitch_myswitch_p10
+	SET collectd_int 0_10
+	SET ifAlias Cam: Back Yard 01
+	NODES myswitch_p10:-1:12 myswitch_p10:-1:250
+	SET out_interface 0/10
+
+LINK myswitch_myswitch_p12
+	SET collectd_int 0_12
+	SET ifAlias Cam: Garage
+	NODES myswitch_p12:-1:12 myswitch_p12:-1:250
+	SET out_interface 0/12
+
+LINK myswitch_myswitch_p14
+	SET collectd_int 0_14
+	SET ifAlias Cam: Hallway
+	NODES myswitch_p14:-1:12 myswitch_p14:-1:250
+	SET out_interface 0/14
+
+LINK myswitch_myswitch_p16
+	SET collectd_int 0_16
+	SET ifAlias home-cat37-1
+	NODES myswitch_p16:-1:12 myswitch_p16:-1:250
+	SET out_interface 0/16
+
+# That's All Folks!
